@@ -25,7 +25,7 @@ header{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 12px 0;
 .pill.on{color:#fff;border-color:var(--on)}
 .pill.on i{background:var(--on);box-shadow:0 0 0 3px rgba(31,164,99,.25)}
 nav{display:flex;gap:2px}
-nav button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:9px 4px;font-weight:700;font-size:12.5px;color:var(--m);cursor:pointer}
+nav button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:9px 2px;font-weight:700;font-size:11.5px;white-space:nowrap;color:var(--m);cursor:pointer}
 nav button.on{color:#fff;border-color:var(--acc)}
 main{padding:12px}
 .tab{display:none}.tab.on{display:block}
@@ -63,14 +63,18 @@ textarea{resize:vertical;min-height:56px}
 .help{background:var(--p);border:1px solid var(--l);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--m)}
 .help b{color:var(--t)}
 .help code{font-size:11.5px;color:#8fb0ff;word-break:break-all}
+.lays{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lays button{background:var(--p);border:1px solid var(--l);border-radius:9px;padding:6px 4px 7px;cursor:pointer;color:var(--m);font:600 11px Mont}
+.lays button.on{border-color:var(--acc);color:#fff;background:#1c2748}
+.lays svg{display:block;width:100%;height:auto;margin-bottom:4px}
 footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
 </style>
 </head>
 <body>
 <header>
   <div class="hd"><h1>Live Église<small>RÉGIE · MOSES GRAPHITY</small></h1><button class="stop" id="stopAll">TOUT MASQUER</button></div>
-  <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pBug" title="Afficher / masquer le nom de l'église"><i></i>Nom église</span></div>
-  <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Plein écran</button><button data-t="set">Réglages</button></nav>
+  <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pOv" title="Masquer les cadres"><i></i>Cadres</span><span class="pill" id="pBug" title="Afficher / masquer le nom de l'église"><i></i>Nom église</span></div>
+  <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Plein écran</button><button data-t="ov">Cadres</button><button data-t="set">Réglages</button></nav>
 </header>
 <main>
 <!-- BIBLE -->
@@ -108,6 +112,23 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <div class="fd"><span class="lab">Arrière-plan</span><div class="chips" id="bgs"></div></div>
   <div class="btns"><button class="b go" id="fsShow">AFFICHER</button><button class="b hide" id="fsHide">MASQUER</button></div>
 </section>
+<!-- CADRES CAMÉRAS -->
+<section class="tab" id="t-ov">
+  <div class="fd"><span class="lab">Disposition</span><div class="lays" id="lays"></div></div>
+  <div class="btns"><button class="b go" id="ovShow">AFFICHER LES CADRES</button><button class="b hide" id="ovHide">MASQUER</button></div>
+  <div class="fd"><span class="lab">Fond</span><div class="chips" id="ovBgs"></div></div>
+  <div class="fd" id="imgFd" style="display:none"><label for="bgImg">Lien de l'image de fond</label><input type="text" id="bgImg" placeholder="https://…/photo.jpg"></div>
+  <div class="fd"><label for="ovTitle">Titre en haut à droite</label><input type="text" id="ovTitle" placeholder="Ex. : Culte du dimanche"></div>
+  <label class="ck"><input type="checkbox" id="ovTop"> Afficher le haut (nom de l'église + titre)</label>
+  <label class="ck"><input type="checkbox" id="ovNames"> Afficher les noms sous les caméras</label>
+  <div class="row fd" style="margin-top:8px"><div><label for="n1">Caméra 1 · nom</label><input type="text" id="n1" placeholder="Pasteur Jean"></div><div><label for="r1">Rôle</label><input type="text" id="r1" placeholder="Prédicateur"></div></div>
+  <div class="row fd"><div><label for="n2">Caméra 2 · nom</label><input type="text" id="n2" placeholder="Frère Paul"></div><div><label for="r2">Rôle</label><input type="text" id="r2" placeholder="Interprète · Mooré"></div></div>
+  <div class="fd" id="vpFd"><span class="lab">Panneau verset (disposition « Caméra + verset »)</span><div class="msg" id="vpRef">Aucun passage.</div><button class="b" id="vpTake" style="width:100%">Prendre le passage choisi dans l'onglet Bible</button></div>
+  <div id="icFd"><span class="lab">Case info (disposition « Multi-caméras »)</span>
+  <div class="row fd"><input type="text" id="iK" placeholder="En ce moment"><input type="text" id="iS" placeholder="Chorale de la Grâce"></div>
+  <div class="fd"><input type="text" id="iT" placeholder="Louange & adoration"></div></div>
+  <div class="help" id="ovHelp"></div>
+</section>
 <!-- RÉGLAGES -->
 <section class="tab" id="t-set">
   <div class="fd"><label for="church">Nom de l'église (coin de l'écran)</label><input type="text" id="church" placeholder="Ex. : Église Évangélique de la Grâce"></div>
@@ -136,7 +157,7 @@ var ui=load(UIK,{saved:[],recent:[],auto:0,bg:'lumiere'});
 var bc=null;try{bc=new BroadcastChannel(KEY)}catch(e){}
 function send(){st.ts=Date.now();store(KEY,st);if(bc)bc.postMessage(st);status()}
 function saveUi(){store(UIK,ui)}
-function status(){$('pLt').classList.toggle('on',!!st.lt.on);$('pFs').classList.toggle('on',!!st.fs.on);$('pBug').classList.toggle('on',!!(st.settings.showBug&&st.settings.church))}
+function status(){$('pLt').classList.toggle('on',!!st.lt.on);if(st.ov)$('pOv').classList.toggle('on',!!st.ov.on);$('pFs').classList.toggle('on',!!st.fs.on);$('pBug').classList.toggle('on',!!(st.settings.showBug&&st.settings.church))}
 function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function chips(id,list,cur,fn){var el=$(id);el.innerHTML='';list.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='chip'+(o[0]==cur?' on':'');b.textContent=o[1];b.onclick=function(){fn(o[0]);chips(id,list,o[0],fn)};el.appendChild(b)})}
 // onglets
@@ -157,7 +178,7 @@ $('ltSave').onclick=function(){var l1=$('l1').value.trim();if(!l1){$('l1').focus
 drawSaved();
 
 /* ---------- PLEIN ÉCRAN ---------- */
-var BG=[['aucun','Aucun (transparent)'],['lumiere','Lumière animée'],['uni','Bleu nuit'],['noir','Noir'],['aube','Aube']];
+var BG=[['aucun','Transparent'],['lumiere','Lumière'],['rayons','Rayons'],['bokeh','Bokeh'],['vagues','Vagues'],['grille','Grille'],['uni','Bleu nuit'],['aube','Aube'],['noir','Noir'],['image','Image']];
 chips('bgs',BG,ui.bg,function(v){ui.bg=v;saveUi();if(st.fs.on){st.fs.bg=v;send()}});
 var PRE=[['Bienvenue','Culte du dimanche','Que Dieu vous bénisse'],['Louange & adoration','',''],['La Parole de Dieu','Prédication',''],['Offrande','Dîmes et offrandes','Dieu aime celui qui donne avec joie'],['Annonces','',''],['Prière','',''],['Merci d\'avoir suivi','À bientôt','Que le Seigneur vous garde']];
 (function(){var el=$('presets');PRE.forEach(function(p){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=p[0];b.onclick=function(){$('ft').value=p[0];$('fk').value=p[1];$('fsub').value=p[2]};el.appendChild(b)})})();
@@ -180,6 +201,27 @@ chips('mFs',[['centre','Centré'],['editorial','Éditorial'],['carte','Carte bla
 chips('poss',[['gauche','En bas à gauche'],['centre','En bas au centre']],S.pos,function(v){S.pos=v;send()});
 chips('trans',[['fondu','Fondu'],['glisse','Glissement'],['zoom','Zoom']],S.trans,function(v){S.trans=v;send()});
 chips('speeds',[[0.35,'Rapide'],[0.6,'Normale'],[1,'Lente']],S.speed,function(v){S.speed=v;send()});
+
+/* ---------- CADRES ---------- */
+st.ov=Object.assign({on:false,layout:'orateur',bg:'lumiere',title:'',showTop:true,showNames:true,n1:'',r1:'',n2:'',r2:'',vText:'',vRef:'',iK:'En ce moment',iT:'Louange & adoration',iS:''},st.ov||{});
+var OV=st.ov;
+var LAYS=[['orateur','Orateur seul',[[8,7,84,47]]],['duo','Pasteur + interprète',[[6,9,43,46],[51,9,43,46]]],['incrust','Incrustation',[[5,8,69,39],[75,24,23,23,1]]],['verset','Caméra + verset',[[5,11,52,38],[62,25,30,3,2],[62,32,26,3,2],[62,39,20,3,2]]],['multi','Multi-caméras',[[6,8,53,43],[61,8,33,21],[61,31,33,20,3]]]];
+var POS={orateur:'Caméra 1 : X 160, Y 120 · 1600 × 900',duo:'Caméra 1 : X 120, Y 150 · 820 × 820<br>Caméra 2 : X 980, Y 150 · 820 × 820',incrust:'Caméra 1 : X 90, Y 140 · 1320 × 742<br>Caméra 2 (rond) : X 1440, Y 470 · 440 × 440',verset:'Caméra 1 : X 90, Y 200 · 1000 × 680',multi:'Caméra 1 : X 110, Y 150 · 1020 × 780<br>Caméra 2 : X 1170, Y 150 · 640 × 370'};
+function drawLays(){var el=$('lays');el.innerHTML='';LAYS.forEach(function(l){var b=document.createElement('button');b.type='button';if(l[0]==OV.layout)b.className='on';
+ var svg='<svg viewBox="0 0 100 56"><rect width="100" height="56" rx="4" fill="#0b1430"/>'+l[2].map(function(r){return r[4]==1?'<circle cx="'+(r[0]+r[2]/2)+'" cy="'+(r[1]+r[3]/2)+'" r="'+(r[2]/2)+'" fill="#8fb0ff"/>':r[4]==2?'<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="1" fill="#e9ebf2" opacity=".8"/>':r[4]==3?'<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="2.5" fill="#fff"/>':'<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="2.5" fill="#3E6FF0"/>'}).join('')+'</svg>';
+ b.innerHTML=svg+l[1];b.onclick=function(){OV.layout=l[0];drawLays();ovUi();if(OV.on)send()};el.appendChild(b)})}
+function ovUi(){$('vpFd').style.display=OV.layout=='verset'?'':'none';$('icFd').style.display=OV.layout=='multi'?'':'none';$('ovHelp').innerHTML='<b>Placer vos caméras</b> (sous l\'affichage dans OBS · clic droit › Transformer › Modifier la transformation) :<br>'+POS[OV.layout]+'<br>Ce qui dépasse du cadre est caché automatiquement.';$('vpRef').textContent=OV.vRef?OV.vRef+' · '+OV.vText.slice(0,60)+'…':'Aucun passage.'}
+var FONDS=[['lumiere','Lumière'],['rayons','Rayons'],['bokeh','Bokeh'],['vagues','Vagues'],['grille','Grille'],['uni','Bleu nuit'],['aube','Aube'],['noir','Noir'],['image','Image']];
+chips('ovBgs',FONDS,OV.bg,function(v){OV.bg=v;$('imgFd').style.display=v=='image'?'':'none';if(OV.on)send()});
+$('imgFd').style.display=OV.bg=='image'?'':'none';
+$('bgImg').value=st.settings.bgImg||'';$('bgImg').onchange=function(){st.settings.bgImg=this.value.trim();send()};
+[['ovTitle','title'],['n1','n1'],['r1','r1'],['n2','n2'],['r2','r2'],['iK','iK'],['iT','iT'],['iS','iS']].forEach(function(p){var e=$(p[0]);e.value=OV[p[1]]||'';e.oninput=function(){OV[p[1]]=this.value.trim();clearTimeout(e._t);e._t=setTimeout(function(){if(OV.on)send();else store(KEY,st)},250)}});
+$('ovTop').checked=OV.showTop!==false;$('ovTop').onchange=function(){OV.showTop=this.checked;if(OV.on)send()};
+$('ovNames').checked=OV.showNames!==false;$('ovNames').onchange=function(){OV.showNames=this.checked;if(OV.on)send()};
+$('ovShow').onclick=function(){OV.on=true;send()};$('ovHide').onclick=function(){OV.on=false;send()};
+$('pOv').onclick=function(){if(OV.on){OV.on=false;send()}};
+$('vpTake').onclick=function(){if(!BIB)return;OV.vText=verses().map(function(x){return x[1]}).join(' ');OV.vRef=ref();ovUi();if(OV.on)send();else store(KEY,st)};
+drawLays();ovUi();
 $('ovUrl').textContent=new URL('affichage.html',location.href).href;
 
 /* ---------- BIBLE ---------- */
