@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live Église · Régie</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face{font-family:Mont;font-weight:500;src:url(../assets/montserrat-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:Mont;font-weight:600;src:url(../assets/montserrat-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Mont;font-weight:700;src:url(../assets/montserrat-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:Lora;font-weight:400;src:url(fonts/lora-latin-400-normal.woff2) format('woff2')}
+:root{--bg:#14161c;--p:#1d2029;--p2:#262a35;--l:#333847;--t:#e9ebf2;--m:#9aa1b5;--acc:#3E6FF0;--on:#1fa463;--off:#d9534f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--t);font:500 14px/1.45 Mont,Arial,sans-serif;min-width:280px}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 12px 0;border-bottom:1px solid var(--l)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hd h1{font-size:15px;font-weight:700;letter-spacing:.02em}
+.hd h1 small{color:var(--m);font-weight:600;font-size:11px;display:block;letter-spacing:.04em}
+.stop{background:var(--off);border:0;border-radius:8px;padding:8px 10px;font-weight:700;font-size:12px;cursor:pointer;color:#fff;white-space:nowrap}
+.live{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:6px;background:var(--p);border:1px solid var(--l);border-radius:999px;padding:3px 10px 3px 8px;font-size:11.5px;font-weight:600;color:var(--m);cursor:pointer}
+.pill i{width:8px;height:8px;border-radius:50%;background:#4a5063}
+.pill.on{color:#fff;border-color:var(--on)}
+.pill.on i{background:var(--on);box-shadow:0 0 0 3px rgba(31,164,99,.25)}
+nav{display:flex;gap:2px}
+nav button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:9px 4px;font-weight:700;font-size:12.5px;color:var(--m);cursor:pointer}
+nav button.on{color:#fff;border-color:var(--acc)}
+main{padding:12px}
+.tab{display:none}.tab.on{display:block}
+.fd{margin-bottom:10px}
+.fd>label,.lab{display:block;font-size:11.5px;font-weight:700;color:var(--m);margin-bottom:5px;letter-spacing:.03em;text-transform:uppercase}
+input[type=text],select,textarea{width:100%;background:var(--p);border:1px solid var(--l);border-radius:8px;padding:9px 10px;outline:0}
+input[type=text]:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:56px}
+.row{display:flex;gap:6px}.row>*{flex:1;min-width:0}
+.btns{display:flex;gap:6px;margin:10px 0}
+.b{flex:1;border:0;border-radius:9px;padding:12px 8px;font-weight:700;font-size:13px;cursor:pointer;background:var(--p2);color:var(--t);border:1px solid var(--l)}
+.b:hover{filter:brightness(1.15)}
+.b.go{background:var(--on);border-color:var(--on);color:#fff}
+.b.hide{background:transparent;border-color:var(--off);color:#ff8a86}
+.b.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.b.sm{padding:8px 6px;font-size:12px;flex:0 0 auto}
+.prev{background:var(--p);border:1px solid var(--l);border-radius:10px;padding:12px;font:400 15px/1.5 Lora,Georgia,serif;max-height:190px;overflow:auto;min-height:60px}
+.prev .ref{font:700 12px Mont;color:#8fb0ff;letter-spacing:.05em;margin-top:8px}
+.prev sup{font:700 10px Mont;color:#8fb0ff;margin-right:3px}
+.msg{font-size:12px;color:var(--m);margin:6px 0}
+.msg.err{color:#ff8a86}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--p);border:1px solid var(--l);border-radius:999px;padding:6px 10px;font-size:12.5px;font-weight:600;cursor:pointer;max-width:100%}
+.chip:hover{border-color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip x{color:var(--m);font-weight:700;padding-left:2px}
+.chip x:hover{color:#ff8a86}
+.sep{height:1px;background:var(--l);margin:14px 0}
+.sw{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sw button{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.sw button.on{border-color:#fff}
+.sw input[type=color]{width:34px;height:30px;border:0;background:none;padding:0;cursor:pointer}
+.ck{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;margin:6px 0;cursor:pointer}
+.ck input{width:16px;height:16px;accent-color:var(--acc)}
+.help{background:var(--p);border:1px solid var(--l);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--m)}
+.help b{color:var(--t)}
+.help code{font-size:11.5px;color:#8fb0ff;word-break:break-all}
+footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd"><h1>Live Église<small>RÉGIE · MOSES GRAPHITY</small></h1><button class="stop" id="stopAll">TOUT MASQUER</button></div>
+  <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pBug" title="Afficher / masquer le nom de l'église"><i></i>Nom église</span></div>
+  <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Plein écran</button><button data-t="set">Réglages</button></nav>
+</header>
+<main>
+<!-- BIBLE -->
+<section class="tab on" id="t-bible">
+  <div class="fd"><label for="q">Rechercher un passage</label><input type="text" id="q" placeholder="Ex. : Jean 3:16  ·  Ps 23:1-4  ·  1 Co 13" autocomplete="off"></div>
+  <div class="row fd"><select id="bk" aria-label="Livre"></select></div>
+  <div class="row fd"><select id="ch" aria-label="Chapitre"></select><select id="v1" aria-label="Du verset"></select><select id="v2" aria-label="Au verset"></select></div>
+  <div class="msg" id="bmsg">Chargement de la Bible…</div>
+  <div class="prev" id="bprev"></div>
+  <div class="btns"><button class="b go" id="bLt">Bandeau</button><button class="b go" id="bFs">Plein écran</button></div>
+  <div class="btns"><button class="b sm" id="bPrev">◀ Précédent</button><button class="b" id="bHide" style="flex:1">Masquer le verset</button><button class="b sm" id="bNext">Suivant ▶</button></div>
+  <div class="lab" style="margin-top:12px">Récents</div><div class="chips" id="recent"></div>
+</section>
+<!-- BANDEAU -->
+<section class="tab" id="t-lt">
+  <div class="fd"><label for="l1">Nom / titre</label><input type="text" id="l1" placeholder="Ex. : Pasteur Jean OUÉDRAOGO"></div>
+  <div class="fd"><label for="l2">Fonction / sous-titre</label><input type="text" id="l2" placeholder="Ex. : Prédicateur du jour"></div>
+  <div class="btns"><button class="b go" id="ltShow">AFFICHER</button><button class="b hide" id="ltHide">MASQUER</button></div>
+  <div class="row fd"><div><span class="lab">Masquer tout seul</span><select id="auto"><option value="0">Non (manuel)</option><option value="8">Après 8 s</option><option value="15">Après 15 s</option><option value="30">Après 30 s</option></select></div></div>
+  <div class="sep"></div>
+  <div class="lab">Bandeaux enregistrés <span style="text-transform:none;font-weight:600">· touchez pour afficher</span></div>
+  <div class="chips" id="saved"></div>
+  <div class="btns"><button class="b" id="ltSave">+ Enregistrer ce bandeau</button></div>
+</section>
+<!-- PLEIN ÉCRAN -->
+<section class="tab" id="t-fs">
+  <div class="lab">Modèles rapides</div>
+  <div class="chips" id="presets" style="margin-bottom:12px"></div>
+  <div class="fd"><label for="fk">Petit titre (au-dessus)</label><input type="text" id="fk" placeholder="Ex. : Culte du dimanche"></div>
+  <div class="fd"><label for="ft">Titre</label><input type="text" id="ft" placeholder="Ex. : Bienvenue"></div>
+  <div class="fd"><label for="fsub">Sous-titre</label><input type="text" id="fsub" placeholder="Ex. : Que Dieu vous bénisse"></div>
+  <div class="fd"><span class="lab">Arrière-plan</span><div class="chips" id="bgs"></div></div>
+  <div class="btns"><button class="b go" id="fsShow">AFFICHER</button><button class="b hide" id="fsHide">MASQUER</button></div>
+</section>
+<!-- RÉGLAGES -->
+<section class="tab" id="t-set">
+  <div class="fd"><label for="church">Nom de l'église (coin de l'écran)</label><input type="text" id="church" placeholder="Ex. : Église Évangélique de la Grâce"></div>
+  <label class="ck"><input type="checkbox" id="showBug"> Afficher le nom en haut à droite</label>
+  <label class="ck"><input type="checkbox" id="liveDot"> Ajouter le point rouge « en direct »</label>
+  <div class="sep"></div>
+  <div class="fd"><span class="lab">Couleur principale</span><div class="sw" id="sw"></div></div>
+  <div class="fd"><span class="lab">Style du bandeau</span><div class="chips" id="styles"></div></div>
+  <div class="fd"><span class="lab">Position du bandeau</span><div class="chips" id="poss"></div></div>
+  <div class="fd"><span class="lab">Transition</span><div class="chips" id="trans"></div></div>
+  <div class="fd"><span class="lab">Vitesse</span><div class="chips" id="speeds"></div></div>
+  <div class="sep"></div>
+  <div class="help"><b>Installation dans OBS</b><br>1. Source « Navigateur » : <code id="ovUrl"></code> · largeur 1920, hauteur 1080.<br>2. Cette régie : menu Docks › Docks de navigateur personnalisés.<br><a href="./" target="_blank" style="color:#8fb0ff">Voir le guide complet</a></div>
+</section>
+</main>
+<footer>Live Église · créé par MOSES GRAPHITY · Bible Louis Segond 1910</footer>
+<script>
+(function(){
+var KEY='mg-live-eglise',UIK='mg-live-eglise-regie';
+var $=function(i){return document.getElementById(i)};
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v||d}catch(e){return d}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var st=load(KEY,null)||{};
+st.settings=Object.assign({accent:'#3E6FF0',style:'moderne',pos:'gauche',trans:'fondu',speed:0.6,church:'',showBug:false,liveDot:true},st.settings||{});
+st.lt=st.lt||{on:false};st.fs=st.fs||{on:false};
+var ui=load(UIK,{saved:[],recent:[],auto:0,bg:'lumiere'});
+var bc=null;try{bc=new BroadcastChannel(KEY)}catch(e){}
+function send(){st.ts=Date.now();store(KEY,st);if(bc)bc.postMessage(st);status()}
+function saveUi(){store(UIK,ui)}
+function status(){$('pLt').classList.toggle('on',!!st.lt.on);$('pFs').classList.toggle('on',!!st.fs.on);$('pBug').classList.toggle('on',!!(st.settings.showBug&&st.settings.church))}
+function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function chips(id,list,cur,fn){var el=$(id);el.innerHTML='';list.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='chip'+(o[0]==cur?' on':'');b.textContent=o[1];b.onclick=function(){fn(o[0]);chips(id,list,o[0],fn)};el.appendChild(b)})}
+// onglets
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('nav button').forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.id=='t-'+b.dataset.t)})}});
+$('stopAll').onclick=function(){st.lt.on=false;st.fs.on=false;clearTimeout(autoT);send()};
+$('pLt').onclick=function(){if(st.lt.on){st.lt.on=false;send()}};
+$('pFs').onclick=function(){if(st.fs.on){st.fs.on=false;send()}};
+$('pBug').onclick=function(){st.settings.showBug=!st.settings.showBug;$('showBug').checked=st.settings.showBug;send()};
+
+/* ---------- BANDEAU ---------- */
+var autoT;
+function showLt(o){st.lt={on:true,kind:o.kind||'nom',l1:o.l1,l2:o.l2};send();clearTimeout(autoT);var a=+ui.auto;if(a&&o.kind!='verset')autoT=setTimeout(function(){st.lt.on=false;send()},a*1000)}
+$('ltShow').onclick=function(){var l1=$('l1').value.trim();if(!l1){$('l1').focus();return}showLt({l1:l1,l2:$('l2').value.trim()})};
+$('ltHide').onclick=function(){st.lt.on=false;clearTimeout(autoT);send()};
+$('auto').value=ui.auto;$('auto').onchange=function(){ui.auto=this.value;saveUi()};
+function drawSaved(){var el=$('saved');el.innerHTML='';ui.saved.forEach(function(s,i){var c=document.createElement('span');c.className='chip';c.innerHTML=esc(s.l1)+(s.l2?' <span style="color:var(--m);font-weight:500">· '+esc(s.l2)+'</span>':'')+' <x title="Supprimer">×</x>';c.onclick=function(e){if(e.target.tagName=='X'){ui.saved.splice(i,1);saveUi();drawSaved();return}$('l1').value=s.l1;$('l2').value=s.l2||'';showLt(s)};el.appendChild(c)});if(!ui.saved.length)el.innerHTML='<span class="msg">Aucun bandeau enregistré.</span>'}
+$('ltSave').onclick=function(){var l1=$('l1').value.trim();if(!l1){$('l1').focus();return}ui.saved.unshift({l1:l1,l2:$('l2').value.trim()});ui.saved=ui.saved.slice(0,30);saveUi();drawSaved()};
+drawSaved();
+
+/* ---------- PLEIN ÉCRAN ---------- */
+var BG=[['aucun','Aucun (transparent)'],['lumiere','Lumière animée'],['uni','Bleu nuit'],['noir','Noir'],['aube','Aube']];
+chips('bgs',BG,ui.bg,function(v){ui.bg=v;saveUi();if(st.fs.on){st.fs.bg=v;send()}});
+var PRE=[['Bienvenue','Culte du dimanche','Que Dieu vous bénisse'],['Louange & adoration','',''],['La Parole de Dieu','Prédication',''],['Offrande','Dîmes et offrandes','Dieu aime celui qui donne avec joie'],['Annonces','',''],['Prière','',''],['Merci d\'avoir suivi','À bientôt','Que le Seigneur vous garde']];
+(function(){var el=$('presets');PRE.forEach(function(p){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=p[0];b.onclick=function(){$('ft').value=p[0];$('fk').value=p[1];$('fsub').value=p[2]};el.appendChild(b)})})();
+$('fsShow').onclick=function(){var t=$('ft').value.trim();if(!t){$('ft').focus();return}st.fs={on:true,kind:'titre',title:t,kicker:$('fk').value.trim(),sub:$('fsub').value.trim(),bg:ui.bg};send()};
+$('fsHide').onclick=function(){st.fs.on=false;send()};
+
+/* ---------- RÉGLAGES ---------- */
+var S=st.settings;
+$('church').value=S.church;$('showBug').checked=S.showBug;$('liveDot').checked=S.liveDot;
+$('church').oninput=function(){S.church=this.value.trim();send()};
+$('showBug').onchange=function(){S.showBug=this.checked;send()};
+$('liveDot').onchange=function(){S.liveDot=this.checked;send()};
+var COLS=['#3E6FF0','#1B3D8F','#C9A227','#C0392B','#7A4DD8','#1FA463','#E67E22','#FFFFFF'];
+function drawSw(){var el=$('sw');el.innerHTML='';COLS.forEach(function(c){var b=document.createElement('button');b.type='button';b.style.background=c;b.title=c;if(c.toLowerCase()==S.accent.toLowerCase())b.className='on';b.onclick=function(){S.accent=c;send();drawSw()};el.appendChild(b)});var i=document.createElement('input');i.type='color';i.value=S.accent;i.title='Autre couleur';i.oninput=function(){S.accent=this.value;send()};i.onchange=drawSw;el.appendChild(i);document.documentElement.style.setProperty('--acc',S.accent)}
+drawSw();
+chips('styles',[['moderne','Moderne'],['clair','Clair'],['minimal','Minimal']],S.style,function(v){S.style=v;send()});
+chips('poss',[['gauche','En bas à gauche'],['centre','En bas au centre']],S.pos,function(v){S.pos=v;send()});
+chips('trans',[['fondu','Fondu'],['glisse','Glissement'],['zoom','Zoom']],S.trans,function(v){S.trans=v;send()});
+chips('speeds',[[0.35,'Rapide'],[0.6,'Normale'],[1,'Lente']],S.speed,function(v){S.speed=v;send()});
+$('ovUrl').textContent=new URL('affichage.html',location.href).href;
+
+/* ---------- BIBLE ---------- */
+var BIB=null,NAMES=[],sel={b:42,c:3,a:16,z:16};
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'')}
+var AB={gn:'genese',ge:'genese',ex:'exode',lv:'levitique',le:'levitique',nb:'nombres',no:'nombres',dt:'deuteronome',de:'deuteronome',jos:'josue',jg:'juges',jug:'juges',rt:'ruth',ru:'ruth',ps:'psaumes',psaume:'psaumes',pr:'proverbes',pro:'proverbes',ec:'ecclesiaste',ecc:'ecclesiaste',ct:'cantique',ca:'cantique',es:'esaie',esa:'esaie',is:'esaie',jr:'jeremie',je:'jeremie',jer:'jeremie',la:'lamentations',lm:'lamentations',ez:'ezechiel',eze:'ezechiel',dn:'daniel',da:'daniel',os:'osee',jl:'joel',am:'amos',ab:'abdias',jon:'jonas',mi:'michee',na:'nahum',ha:'habacuc',so:'sophonie',ag:'aggee',za:'zacharie',ml:'malachie',mal:'malachie',mt:'matthieu',mat:'matthieu',mc:'marc',mr:'marc',lc:'luc',lu:'luc',jn:'jean',jean:'jean',ac:'actes',act:'actes',rm:'romains',ro:'romains',rom:'romains',ga:'galates',gal:'galates',ep:'ephesiens',eph:'ephesiens',ph:'philippiens',php:'philippiens',phil:'philippiens',col:'colossiens',tt:'tite',tit:'tite',phm:'philemon',he:'hebreux',heb:'hebreux',jc:'jacques',ja:'jacques',jac:'jacques',jd:'jude',ap:'apocalypse',apo:'apocalypse',ape:'apocalypse',
+'1s':'1samuel','2s':'2samuel','1r':'1rois','2r':'2rois','1ch':'1chroniques','2ch':'2chroniques','1co':'1corinthiens','2co':'2corinthiens','1th':'1thessaloniciens','2th':'2thessaloniciens','1ti':'1timothee','2ti':'2timothee','1tm':'1timothee','2tm':'2timothee','1p':'1pierre','2p':'2pierre','1pi':'1pierre','2pi':'2pierre','1jn':'1jean','2jn':'2jean','3jn':'3jean','1j':'1jean','2j':'2jean','3j':'3jean'};
+function findBook(s){var n=norm(s);if(!n)return -1;if(AB[n])n=AB[n];var i=NAMES.indexOf(n);if(i>-1)return i;for(i=0;i<NAMES.length;i++)if(NAMES[i].indexOf(n)===0)return i;return -1}
+function parse(q){q=q.trim().replace(/\s+/g,' ');var m=q.match(/^(.*?)\s*(\d+)\s*(?:[:.,]\s*(\d+)\s*(?:[-–à]\s*(\d+))?)?$/);
+ if(!m){var b=findBook(q);return b<0?null:{b:b,c:1,a:1,z:1}}
+ var bk=m[1].trim(),c=+m[2];if(!bk){return null}
+ var b=findBook(bk);if(b<0&&/^\d$/.test(bk)){return null}if(b<0)return null;
+ var a=m[3]?+m[3]:1,z=m[4]?+m[4]:(m[3]?a:BIB[b][1][c-1]?Math.min(BIB[b][1][c-1].length,a+3):a);return {b:b,c:c,a:a,z:z}}
+function opts(el,n,v,fmt){var h='';for(var i=1;i<=n;i++)h+='<option value="'+i+'">'+(fmt?fmt(i):i)+'</option>';el.innerHTML=h;el.value=v}
+function clampSel(){var bk=BIB[sel.b][1];sel.c=Math.max(1,Math.min(sel.c,bk.length));var nv=bk[sel.c-1].length;sel.a=Math.max(1,Math.min(sel.a,nv));sel.z=Math.max(sel.a,Math.min(sel.z,nv))}
+function drawSel(){clampSel();$('bk').value=sel.b;var bk=BIB[sel.b][1];opts($('ch'),bk.length,sel.c,function(i){return 'Chapitre '+i});var nv=bk[sel.c-1].length;opts($('v1'),nv,sel.a,function(i){return 'Verset '+i});opts($('v2'),nv,sel.z,function(i){return 'à '+i});preview()}
+function ref(){return BIB[sel.b][0]+' '+sel.c+':'+sel.a+(sel.z>sel.a?'-'+sel.z:'')}
+function verses(){var r=[];for(var v=sel.a;v<=sel.z;v++)r.push([v,BIB[sel.b][1][sel.c-1][v-1]]);return r}
+function preview(){var vs=verses();$('bprev').innerHTML=vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' ')+'<div class="ref">'+esc(ref())+' · LSG</div>';$('bmsg').textContent=vs.length>3?'Passage long : le plein écran est conseillé.':'';$('bmsg').className='msg'}
+function addRecent(){var r={b:sel.b,c:sel.c,a:sel.a,z:sel.z,t:ref()};ui.recent=[r].concat(ui.recent.filter(function(x){return x.t!=r.t})).slice(0,10);saveUi();drawRecent()}
+function drawRecent(){var el=$('recent');el.innerHTML='';ui.recent.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=r.t;b.onclick=function(){sel={b:r.b,c:r.c,a:r.a,z:r.z};drawSel()};el.appendChild(b)});if(!ui.recent.length)el.innerHTML='<span class="msg">Les passages affichés apparaîtront ici.</span>'}
+var mode=null;
+function liveLt(){var vs=verses();st.lt={on:true,kind:'verset',l1:vs.map(function(x){return x[1]}).join(' '),l2:ref()};mode='lt';clearTimeout(autoT);send();addRecent()}
+function liveFs(){var vs=verses();st.fs={on:true,kind:'verset',title:'',html:vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' '),sub:ref(),kicker:'',bg:ui.bg=='aucun'?'lumiere':ui.bg};mode='fs';send();addRecent()}
+$('bLt').onclick=liveLt;$('bFs').onclick=liveFs;
+$('bHide').onclick=function(){if(st.lt.kind=='verset')st.lt.on=false;if(st.fs.kind=='verset')st.fs.on=false;mode=null;send()};
+function step(d){var n=sel.z-sel.a+1,bk=BIB[sel.b][1],nv=bk[sel.c-1].length;
+ if(d>0){if(sel.z<nv){sel.a=sel.z+1;sel.z=Math.min(nv,sel.a+n-1)}else if(sel.c<bk.length){sel.c++;sel.a=1;sel.z=Math.min(bk[sel.c-1].length,n)}else return}
+ else{if(sel.a>1){sel.z=sel.a-1;sel.a=Math.max(1,sel.z-n+1)}else if(sel.c>1){sel.c--;var m=bk[sel.c-1].length;sel.z=m;sel.a=Math.max(1,m-n+1)}else return}
+ drawSel();if(mode=='lt'&&st.lt.on&&st.lt.kind=='verset')liveLt();else if(mode=='fs'&&st.fs.on&&st.fs.kind=='verset')liveFs()}
+$('bNext').onclick=function(){step(1)};$('bPrev').onclick=function(){step(-1)};
+$('bk').onchange=function(){sel={b:+this.value,c:1,a:1,z:1};drawSel()};
+$('ch').onchange=function(){sel.c=+this.value;sel.a=1;sel.z=1;drawSel()};
+$('v1').onchange=function(){sel.a=+this.value;if(sel.z<sel.a)sel.z=sel.a;drawSel()};
+$('v2').onchange=function(){sel.z=+this.value;if(sel.z<sel.a)sel.a=sel.z;drawSel()};
+$('q').onkeydown=function(e){if(e.key=='Enter'){var r=parse(this.value);if(!r){$('bmsg').textContent='Passage introuvable. Exemple : Jean 3:16';$('bmsg').className='msg err';return}sel=r;drawSel();var nb=BIB[sel.b][1];if(r.c>nb.length){$('bmsg').textContent='Ce livre a '+nb.length+' chapitres.';$('bmsg').className='msg err'}}};
+fetch('bible-lsg1910.json').then(function(r){return r.json()}).then(function(d){BIB=d;NAMES=d.map(function(b){return norm(b[0])});$('bk').innerHTML=d.map(function(b,i){return '<option value="'+i+'">'+esc(b[0])+'</option>'}).join('');if(ui.recent[0]){var r=ui.recent[0];sel={b:r.b,c:r.c,a:r.a,z:r.z}}drawSel();drawRecent()}).catch(function(){$('bmsg').textContent='Impossible de charger la Bible. Vérifiez la connexion internet.';$('bmsg').className='msg err'});
+document.addEventListener('keydown',function(e){if(e.target.tagName=='INPUT'||e.target.tagName=='TEXTAREA'||e.target.tagName=='SELECT')return;if(e.key=='ArrowRight')step(1);if(e.key=='ArrowLeft')step(-1);if(e.key=='Escape')$('stopAll').click()});
+status();send();
+})();
+</script>
+</body>
+</html>
