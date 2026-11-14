@@ -82,12 +82,15 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <div class="prev" id="bprev"></div>
   <div class="btns"><button class="b go" id="bLt">Bandeau</button><button class="b go" id="bFs">Plein écran</button></div>
   <div class="btns"><button class="b sm" id="bPrev">◀ Précédent</button><button class="b" id="bHide" style="flex:1">Masquer le verset</button><button class="b sm" id="bNext">Suivant ▶</button></div>
+  <div class="fd"><span class="lab">Modèle en bandeau</span><div class="chips" id="mBible"></div></div>
+  <div class="fd"><span class="lab">Modèle en plein écran</span><div class="chips" id="mFs"></div></div>
   <div class="lab" style="margin-top:12px">Récents</div><div class="chips" id="recent"></div>
 </section>
 <!-- BANDEAU -->
 <section class="tab" id="t-lt">
   <div class="fd"><label for="l1">Nom / titre</label><input type="text" id="l1" placeholder="Ex. : Pasteur Jean OUÉDRAOGO"></div>
   <div class="fd"><label for="l2">Fonction / sous-titre</label><input type="text" id="l2" placeholder="Ex. : Prédicateur du jour"></div>
+  <div class="fd"><span class="lab">Modèle du bandeau</span><div class="chips" id="mName"></div></div>
   <div class="btns"><button class="b go" id="ltShow">AFFICHER</button><button class="b hide" id="ltHide">MASQUER</button></div>
   <div class="row fd"><div><span class="lab">Masquer tout seul</span><select id="auto"><option value="0">Non (manuel)</option><option value="8">Après 8 s</option><option value="15">Après 15 s</option><option value="30">Après 30 s</option></select></div></div>
   <div class="sep"></div>
@@ -112,7 +115,6 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <label class="ck"><input type="checkbox" id="liveDot"> Ajouter le point rouge « en direct »</label>
   <div class="sep"></div>
   <div class="fd"><span class="lab">Couleur principale</span><div class="sw" id="sw"></div></div>
-  <div class="fd"><span class="lab">Style du bandeau</span><div class="chips" id="styles"></div></div>
   <div class="fd"><span class="lab">Position du bandeau</span><div class="chips" id="poss"></div></div>
   <div class="fd"><span class="lab">Transition</span><div class="chips" id="trans"></div></div>
   <div class="fd"><span class="lab">Vitesse</span><div class="chips" id="speeds"></div></div>
@@ -128,7 +130,7 @@ var $=function(i){return document.getElementById(i)};
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v||d}catch(e){return d}}
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 var st=load(KEY,null)||{};
-st.settings=Object.assign({accent:'#3E6FF0',style:'moderne',pos:'gauche',trans:'fondu',speed:0.6,church:'',showBug:false,liveDot:true},st.settings||{});
+st.settings=Object.assign({accent:'#3E6FF0',mName:'moderne',mBible:'moderne',mFs:'centre',pos:'gauche',trans:'fondu',speed:0.6,church:'',showBug:false,liveDot:true},st.settings||{});
 st.lt=st.lt||{on:false};st.fs=st.fs||{on:false};
 var ui=load(UIK,{saved:[],recent:[],auto:0,bg:'lumiere'});
 var bc=null;try{bc=new BroadcastChannel(KEY)}catch(e){}
@@ -171,7 +173,10 @@ $('liveDot').onchange=function(){S.liveDot=this.checked;send()};
 var COLS=['#3E6FF0','#1B3D8F','#C9A227','#C0392B','#7A4DD8','#1FA463','#E67E22','#FFFFFF'];
 function drawSw(){var el=$('sw');el.innerHTML='';COLS.forEach(function(c){var b=document.createElement('button');b.type='button';b.style.background=c;b.title=c;if(c.toLowerCase()==S.accent.toLowerCase())b.className='on';b.onclick=function(){S.accent=c;send();drawSw()};el.appendChild(b)});var i=document.createElement('input');i.type='color';i.value=S.accent;i.title='Autre couleur';i.oninput=function(){S.accent=this.value;send()};i.onchange=drawSw;el.appendChild(i);document.documentElement.style.setProperty('--acc',S.accent)}
 drawSw();
-chips('styles',[['moderne','Moderne'],['clair','Clair'],['minimal','Minimal']],S.style,function(v){S.style=v;send()});
+var MOD=[['moderne','Moderne'],['ruban','Ruban'],['cadre','Cadre'],['editorial','Éditorial'],['bande','Bande TV'],['clair','Clair'],['capsule','Capsule'],['minimal','Minimal']];
+chips('mName',MOD,S.mName,function(v){S.mName=v;send()});
+chips('mBible',MOD,S.mBible,function(v){S.mBible=v;send()});
+chips('mFs',[['centre','Centré'],['editorial','Éditorial'],['carte','Carte blanche']],S.mFs,function(v){S.mFs=v;send()});
 chips('poss',[['gauche','En bas à gauche'],['centre','En bas au centre']],S.pos,function(v){S.pos=v;send()});
 chips('trans',[['fondu','Fondu'],['glisse','Glissement'],['zoom','Zoom']],S.trans,function(v){S.trans=v;send()});
 chips('speeds',[[0.35,'Rapide'],[0.6,'Normale'],[1,'Lente']],S.speed,function(v){S.speed=v;send()});
