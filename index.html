@@ -157,6 +157,40 @@ footer img{height:32px;width:auto}
 .chat.on{transform:none}
 .chat img{width:44px;height:44px;border-radius:50%;object-fit:cover}
 .chat small{display:block;font-weight:600;color:var(--wa)}
+
+/* formulaires de commande */
+.fm{position:fixed;inset:0;z-index:70;background:rgba(6,14,38,.6);display:none;align-items:flex-end;justify-content:center}
+.fm.on{display:flex}
+.fm .box{background:#fff;width:100%;max-width:600px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));animation:slide .35s cubic-bezier(.2,.7,.2,1)}
+@media(min-width:700px){.fm{align-items:center}.fm .box{border-radius:20px;padding:30px}}
+@keyframes slide{from{transform:translateY(40px);opacity:0}}
+.fm .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.fm h3{font-size:22px;font-weight:800;line-height:1.2}
+.fm .top small{display:block;color:var(--mut);font-size:14px;font-weight:600;margin-top:4px}
+.fm .cl{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:#eef0f5;font:700 20px Mont,Arial;color:var(--encre);cursor:pointer}
+.voc{display:flex;align-items:center;gap:14px;background:#e9f7ef;border:1.5px solid #bfe8cf;border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.voc .mic{flex:none;width:52px;height:52px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center}
+.voc .mic svg{width:26px;height:26px}
+.voc b{display:block;font-size:16px}
+.voc span{font-size:13.5px;color:#3d6b51;font-weight:600}
+.ou{text-align:center;color:var(--mut);font-size:13px;font-weight:700;margin:14px 0}
+.fd{margin-bottom:16px}
+.fd label,.fd .q{display:block;font-weight:700;font-size:15px;margin-bottom:7px}
+.fd label i,.fd .q i{color:#d14b4b;font-style:normal}
+.fd input,.fd textarea{width:100%;font:500 16px Mont,Arial;padding:12px 14px;border:1.5px solid var(--ligne);border-radius:10px;background:#fbfbfa;color:var(--encre)}
+.fd textarea{min-height:84px;resize:vertical}
+.fd input:focus,.fd textarea:focus{outline:0;border-color:var(--ciel);background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:600 14.5px Mont,Arial;padding:10px 14px;border-radius:999px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);cursor:pointer}
+.chips button.on{background:var(--encre);border-color:var(--encre);color:#fff}
+.fd.err input,.fd.err textarea,.fd.err .chips button{border-color:#e07a7a}
+.fd .em{display:none;color:#c43d3d;font-size:13px;font-weight:600;margin-top:5px}
+.fd.err .em{display:block}
+.fm .go2{width:100%;margin-top:6px;font-size:16px;padding:16px}
+.pay{background:var(--papier);border-radius:14px;padding:18px;margin:6px 0 18px}
+.pay ol{padding-left:20px;display:grid;gap:10px;font-size:15px}
+.pay b{color:var(--bleu)}
+.num{font-size:24px;font-weight:800;letter-spacing:.02em;color:var(--encre);margin:6px 0}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
 .who a.rv.in:hover,.tool.rv.in:hover,.pack.rv.in:hover{transform:translateY(-4px)}
@@ -197,14 +231,14 @@ footer img{height:32px;width:auto}
 <div class="marq" aria-hidden="true"><div class="track" id="track"></div></div>
 
 <section id="services"><div class="wrap">
-  <div class="head rv"><div><span class="lab">Services</span><h2>Ce que je fais pour vous</h2></div><p>Prix de départ. Le prix final dépend de votre demande.</p></div>
+  <div class="head rv"><div><span class="lab">Services</span><h2>Ce que je fais pour vous</h2></div><p>Prix de départ. Choisissez un service : un court formulaire, ou un simple message vocal.</p></div>
   <div class="svc">
-    <a class="rv" data-wa="Bonjour Moses, je voudrais une affiche / un flyer." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">01</span><h3>Affiches et flyers</h3><p>Événements, promos, menus, annonces.</p><div class="pr">dès <b>7 000 F</b></div></a>
-    <a class="rv" data-wa="Bonjour Moses, je voudrais un logo." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">02</span><h3>Logo et identité visuelle</h3><p>Un logo unique et ses déclinaisons.</p><div class="pr">dès <b>25 000 F</b></div></a>
-    <a class="rv" data-wa="Bonjour Moses, je voudrais une vidéo animée." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">03</span><h3>Vidéos animées</h3><p>Pubs motion pour TikTok, Facebook et WhatsApp.</p><div class="pr">dès <b>20 000 F</b></div></a>
-    <a class="rv" data-wa="Bonjour Moses, j'ai un rapport / document à mettre en page." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">04</span><h3>Rapports et mise en page</h3><p>Rapports, plaquettes, brochures, magazines.</p><div class="pr">dès <b>15 000 F</b></div></a>
-    <a class="rv" data-wa="Bonjour Moses, je voudrais des visuels pour mes réseaux sociaux." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">05</span><h3>Visuels réseaux sociaux</h3><p>Publications, statuts, couvertures.</p><div class="pr">dès <b>5 000 F</b></div></a>
-    <a class="rv" data-wa="Bonjour Moses, je voudrais des cartes de visite / une impression." href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">06</span><h3>Cartes de visite et impression</h3><p>Cartes, calendriers, kakémonos, bâches.</p><div class="pr"><b>Sur devis</b></div></a>
+    <a class="rv" data-form="affiche" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">01</span><h3>Affiches et flyers</h3><p>Événements, promos, menus, annonces.</p><div class="pr">dès <b>7 000 F</b></div></a>
+    <a class="rv" data-form="logo" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">02</span><h3>Logo et identité visuelle</h3><p>Un logo unique et ses déclinaisons.</p><div class="pr">dès <b>25 000 F</b></div></a>
+    <a class="rv" data-form="video" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">03</span><h3>Vidéos animées</h3><p>Pubs motion pour TikTok, Facebook et WhatsApp.</p><div class="pr">dès <b>20 000 F</b></div></a>
+    <a class="rv" data-form="rapport" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">04</span><h3>Rapports et mise en page</h3><p>Rapports, plaquettes, brochures, magazines.</p><div class="pr">dès <b>15 000 F</b></div></a>
+    <a class="rv" data-form="reseaux" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">05</span><h3>Visuels réseaux sociaux</h3><p>Publications, statuts, couvertures.</p><div class="pr">dès <b>5 000 F</b></div></a>
+    <a class="rv" data-form="impression" href="#"><span class="go"><svg width="16" height="16"><use href="#ar"/></svg></span><span class="n">06</span><h3>Cartes de visite et impression</h3><p>Cartes, calendriers, kakémonos, bâches.</p><div class="pr"><b>Sur devis</b></div></a>
   </div>
 </div></section>
 
@@ -274,6 +308,7 @@ footer img{height:32px;width:auto}
 
 <footer><div class="wrap"><img src="assets/logo-moses-graphity-blanc.png" alt="MOSES GRAPHITY"><span>© <span id="yr"></span> MOSES GRAPHITY · L'art du design et de l'innovation</span></div></footer>
 <a class="chat" id="chat" data-wa="Bonjour Moses !" href="#"><img src="assets/moses-mini.webp" alt=""><span>Discutez avec Moses<small>En ligne sur WhatsApp</small></span></a>
+<div class="fm" id="fm" role="dialog" aria-modal="true" aria-labelledby="fmT"><div class="box" id="fmBox"></div></div>
 <div class="lb" id="lb"><button class="x" aria-label="Fermer">×</button><button class="pv" aria-label="Précédent">‹</button><img alt=""><button class="nx" aria-label="Suivant">›</button></div>
 
 <script>
@@ -303,6 +338,79 @@ if('IntersectionObserver' in window){
  var co=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);co.unobserve(e.target)}})});
  document.querySelectorAll('[data-count]').forEach(function(el){co.observe(el)});
 }else{document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in')})}
+})();
+
+/* ===== Formulaires de commande ===== */
+(function(){
+var WA='22664379597',PAY='64 37 95 97';
+var MIC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>';
+var DELAI={k:'delai',q:'Délai souhaité',t:'chips',o:['Urgent (24-48 h)','3 à 5 jours','Pas pressé'],r:1};
+var BASE=[{k:'nom',q:'Votre nom',t:'text',r:1,ph:'Ex. : Awa Ouédraogo'},{k:'org',q:"Nom de l'entreprise, l'église ou l'activité",t:'text',r:1,ph:'Ex. : Boutique Awa Mode'}];
+var END=[DELAI,{k:'plus',q:'Autre précision',t:'area',ph:'Facultatif'}];
+var OUI=['Oui','Non'];
+var F={
+affiche:{n:'Affiche / flyer',p:'dès 7 000 F',f:[{k:'type',q:"Type d'affiche",t:'chips',o:['Événement','Promotion','Menu','Annonce','Autre'],r:1},{k:'titre',q:"Titre principal de l'affiche",t:'text',r:1,ph:'Ex. : Grande promo de fin d\'année'},{k:'textes',q:'Textes à mettre (date, heure, lieu, prix, contacts…)',t:'area',r:1},{k:'format',q:'Format',t:'chips',o:['Statut WhatsApp','Publication Facebook','A4','A3','Autre'],r:1},{k:'couleurs',q:'Couleurs souhaitées',t:'text',ph:'Ex. : bleu et doré'},{k:'photos',q:'Avez-vous des photos ou un logo à mettre ?',t:'chips',o:OUI}]},
+logo:{n:'Logo et identité visuelle',p:'dès 25 000 F',f:[{k:'nomlogo',q:'Nom exact à écrire dans le logo',t:'text',r:1},{k:'slogan',q:"Slogan (s'il y en a un)",t:'text'},{k:'domaine',q:"Domaine d'activité",t:'text',r:1,ph:'Ex. : restaurant, cosmétique, BTP…'},{k:'style',q:'Style voulu',t:'chips',o:['Moderne','Classique','Élégant','Ludique','Simple'],r:1},{k:'couleurs',q:'Couleurs souhaitées (ou à éviter)',t:'text'},{k:'exemple',q:'Avez-vous un exemple de logo qui vous plaît ?',t:'chips',o:OUI}]},
+video:{n:'Vidéo animée',p:'dès 20 000 F',f:[{k:'objectif',q:'Objectif de la vidéo',t:'chips',o:['Présenter un produit','Annoncer un événement','Faire une promotion','Autre'],r:1},{k:'duree',q:'Durée',t:'chips',o:['15 s','30 s','60 s'],r:1},{k:'reseaux',q:'Pour quels réseaux ?',t:'multi',o:['TikTok','Facebook','WhatsApp','Instagram']},{k:'message',q:'Message principal à faire passer',t:'area',r:1},{k:'voix',q:'Voix off souhaitée ?',t:'chips',o:OUI},{k:'medias',q:'Avez-vous des photos ou vidéos de votre produit ?',t:'chips',o:OUI}]},
+rapport:{n:'Rapport / mise en page',p:'dès 15 000 F',f:[{k:'doc',q:'Type de document',t:'chips',o:['Rapport','Plaquette','Brochure','Magazine','Autre'],r:1},{k:'pages',q:'Nombre de pages (environ)',t:'text',r:1,ph:'Ex. : 20'},{k:'texte',q:'Le texte est-il déjà prêt ?',t:'chips',o:OUI,r:1},{k:'format',q:'Format',t:'chips',o:['A4','A5','Autre']},{k:'impr',q:"Besoin d'impression en plus ?",t:'chips',o:OUI}]},
+reseaux:{n:'Visuels réseaux sociaux',p:'dès 5 000 F le visuel',f:[{k:'nb',q:'Nombre de visuels',t:'chips',o:['1','2 à 5','6 à 12','Plus de 12'],r:1},{k:'res',q:'Pour quels réseaux ?',t:'multi',o:['Facebook','Instagram','TikTok','Statut WhatsApp'],r:1},{k:'sujet',q:'Sujet ou thème des publications',t:'area',r:1},{k:'charte',q:'Couleurs ou charte à respecter',t:'text'}]},
+impression:{n:'Cartes de visite et impression',p:'sur devis',f:[{k:'produit',q:'Produit',t:'chips',o:['Cartes de visite','Calendrier','Kakémono','Bâche','Autre'],r:1},{k:'qte',q:'Quantité',t:'text',r:1,ph:'Ex. : 100'},{k:'infos',q:'Informations à mettre (nom, fonction, téléphone, adresse…)',t:'area',r:1},{k:'design',q:'Avez-vous déjà le design ?',t:'chips',o:['Oui, je l\'ai','Non, à créer'],r:1}]}
+};
+var fm=document.getElementById('fm'),box=document.getElementById('fmBox'),cur=null,vals={};
+function wa(t){return 'https://wa.me/'+WA+'?text='+encodeURIComponent(t)}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fields(){return BASE.concat(F[cur].f,END)}
+function open(id){cur=id;vals={};render();fm.classList.add('on');document.body.style.overflow='hidden';box.scrollTop=0}
+function close(){fm.classList.remove('on');document.body.style.overflow=''}
+function head(t,sub){return '<div class="top"><div><h3 id="fmT">'+t+'</h3><small>'+sub+'</small></div><button class="cl" type="button" data-x aria-label="Fermer">×</button></div>'}
+function render(){
+ var s=F[cur],h=head('Commander : '+s.n,s.p+' · le prix final vous sera confirmé');
+ h+='<a class="voc" target="_blank" rel="noopener" href="'+wa('Bonjour Moses, je veux commander : '+s.n+'. Je vous explique par message vocal.')+'"><span class="mic">'+MIC+'</span><div><b>Vous préférez parler ?</b><span>Touchez ici et envoyez-moi un message vocal sur WhatsApp</span></div></a>';
+ h+='<div class="ou">— ou remplissez le formulaire —</div><form id="fmF" novalidate>';
+ fields().forEach(function(f){
+  var lab=esc(f.q)+(f.r?' <i>*</i>':'');
+  h+='<div class="fd" data-k="'+f.k+'">';
+  if(f.t=='text')h+='<label for="f_'+f.k+'">'+lab+'</label><input id="f_'+f.k+'" name="'+f.k+'" type="text" placeholder="'+esc(f.ph||'')+'">';
+  else if(f.t=='area')h+='<label for="f_'+f.k+'">'+lab+'</label><textarea id="f_'+f.k+'" name="'+f.k+'" placeholder="'+esc(f.ph||'')+'"></textarea>';
+  else{h+='<span class="q">'+lab+(f.t=='multi'?' <small style="font-weight:500;color:var(--mut)">(plusieurs choix possibles)</small>':'')+'</span><div class="chips">';f.o.forEach(function(o){h+='<button type="button" data-v="'+esc(o)+'">'+esc(o)+'</button>'});h+='</div>'}
+  h+='<div class="em">Merci de compléter ce champ.</div></div>';
+ });
+ h+='<button class="btn wa go2" type="submit">Continuer</button></form>';
+ box.innerHTML=h;
+}
+function step2(msg){
+ var s=F[cur],h=head('Dernière étape','Votre demande est prête');
+ h+='<div class="pay"><ol><li>Touchez le bouton vert : WhatsApp s\'ouvre avec votre demande déjà écrite. <b>Envoyez-la.</b></li><li>Je vous confirme le prix final.</li><li>Payez l\'<b>acompte de 50 %</b> par <b>Orange Money</b> ou <b>Wave</b> au :<div class="num">'+PAY+'</div>puis envoyez la capture du paiement dans la discussion.</li><li>Envoyez aussi vos photos, logo ou documents. Je commence le travail.</li></ol></div>';
+ h+='<a class="btn wa go2" target="_blank" rel="noopener" href="'+wa(msg)+'"><svg><use href="#wa"/></svg>Envoyer ma demande sur WhatsApp</a>';
+ h+='<button type="button" class="btn go2" style="background:none;color:var(--mut)" data-back>← Modifier ma demande</button>';
+ box.innerHTML=h;box.scrollTop=0;
+}
+box.addEventListener('click',function(e){
+ var b=e.target.closest('button');if(!b)return;
+ if(b.hasAttribute('data-x')){close();return}
+ if(b.hasAttribute('data-back')){var v=vals;render();restore(v);return}
+ if(b.dataset.v!==undefined){var fd=b.closest('.fd'),k=fd.dataset.k,f=fields().filter(function(x){return x.k==k})[0];
+  if(f.t=='multi'){b.classList.toggle('on')}else{fd.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b&&!x.classList.contains('on'))})}
+  fd.classList.remove('err')}
+});
+function read(){var o={};fields().forEach(function(f){var fd=box.querySelector('.fd[data-k="'+f.k+'"]');if(!fd)return;
+ if(f.t=='text'||f.t=='area')o[f.k]=fd.querySelector('input,textarea').value.trim();
+ else o[f.k]=Array.prototype.map.call(fd.querySelectorAll('button.on'),function(x){return x.dataset.v}).join(', ')});return o}
+function restore(v){fields().forEach(function(f){var fd=box.querySelector('.fd[data-k="'+f.k+'"]');if(!fd||!v[f.k])return;
+ if(f.t=='text'||f.t=='area')fd.querySelector('input,textarea').value=v[f.k];
+ else{var a=v[f.k].split(', ');fd.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',a.indexOf(x.dataset.v)>-1)})}})}
+box.addEventListener('submit',function(e){
+ e.preventDefault();var v=read(),bad=null;
+ fields().forEach(function(f){var fd=box.querySelector('.fd[data-k="'+f.k+'"]');var ko=f.r&&!v[f.k];fd.classList.toggle('err',!!ko);if(ko&&!bad)bad=fd});
+ if(bad){bad.scrollIntoView({behavior:'smooth',block:'center'});return}
+ vals=v;var s=F[cur],m='Bonjour Moses, voici ma demande.\n\n*'+s.n.toUpperCase()+'*\n';
+ fields().forEach(function(f){if(v[f.k])m+='• '+f.q+' : '+v[f.k]+'\n'});
+ m+='\nMerci de me confirmer le prix.';step2(m);
+});
+box.addEventListener('input',function(e){var fd=e.target.closest('.fd');if(fd)fd.classList.remove('err')});
+fm.addEventListener('click',function(e){if(e.target===fm)close()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&fm.classList.contains('on'))close()});
+document.querySelectorAll('[data-form]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();open(a.dataset.form)})});
 })();
 </script>
 </body>
