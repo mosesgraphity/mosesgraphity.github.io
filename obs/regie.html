@@ -67,14 +67,16 @@ textarea{resize:vertical;min-height:56px}
 .lays button{background:var(--p);border:1px solid var(--l);border-radius:9px;padding:6px 4px 7px;cursor:pointer;color:var(--m);font:600 11px Mont}
 .lays button.on{border-color:var(--acc);color:#fff;background:#1c2748}
 .lays svg{display:block;width:100%;height:auto;margin-bottom:4px}
+.fx{display:flex;gap:6px;align-items:center;margin-top:6px}.fx span{flex:0 0 92px;font-weight:700;color:var(--t);font-size:12px}.fx code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.fx button{flex:none;background:var(--acc);border:0;color:#fff;border-radius:6px;padding:5px 8px;font:700 11px Mont;cursor:pointer}
 footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
 </style>
+<script src="noble.min.js"></script>
 </head>
 <body>
 <header>
   <div class="hd"><h1>Live Église<small>RÉGIE · MOSES GRAPHITY</small></h1><button class="stop" id="stopAll">TOUT MASQUER</button></div>
-  <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pOv" title="Masquer les cadres"><i></i>Cadres</span><span class="pill" id="pBug" title="Afficher / masquer le nom de l'église"><i></i>Nom église</span></div>
-  <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Plein écran</button><button data-t="ov">Cadres</button><button data-t="set">Réglages</button></nav>
+  <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pOv" title="Masquer les cadres"><i></i>Cadres</span><span class="pill" id="pTh" title="Masquer le thème"><i></i>Thème</span><span class="pill" id="pTk" title="Masquer le défilant"><i></i>Défilant</span><span class="pill" id="pBug" title="Afficher / masquer le logo ou le nom de l'église"><i></i>Logo</span></div>
+  <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Écran</button><button data-t="ov">Cadres</button><button data-t="info">Infos</button><button data-t="set">Réglages</button></nav>
 </header>
 <main>
 <!-- BIBLE -->
@@ -84,7 +86,7 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <div class="row fd"><select id="ch" aria-label="Chapitre"></select><select id="v1" aria-label="Du verset"></select><select id="v2" aria-label="Au verset"></select></div>
   <div class="msg" id="bmsg">Chargement de la Bible…</div>
   <div class="prev" id="bprev"></div>
-  <div class="btns"><button class="b go" id="bLt">Bandeau</button><button class="b go" id="bFs">Plein écran</button></div>
+  <div class="btns"><button class="b go" id="bLt">Bandeau</button><button class="b go" id="bFs">Plein écran</button><button class="b go" id="bOv" title="Envoyer dans le cadre Caméra + verset">Cadre</button></div>
   <div class="btns"><button class="b sm" id="bPrev">◀ Précédent</button><button class="b" id="bHide" style="flex:1">Masquer le verset</button><button class="b sm" id="bNext">Suivant ▶</button></div>
   <div class="fd"><span class="lab">Modèle en bandeau</span><div class="chips" id="mBible"></div></div>
   <div class="fd"><span class="lab">Modèle en plein écran</span><div class="chips" id="mFs"></div></div>
@@ -111,6 +113,13 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <div class="fd"><label for="fsub">Sous-titre</label><input type="text" id="fsub" placeholder="Ex. : Que Dieu vous bénisse"></div>
   <div class="fd"><span class="lab">Arrière-plan</span><div class="chips" id="bgs"></div></div>
   <div class="btns"><button class="b go" id="fsShow">AFFICHER</button><button class="b hide" id="fsHide">MASQUER</button></div>
+  <div class="sep"></div>
+  <div class="lab">Écran d'attente avec compte à rebours</div>
+  <div class="fd"><input type="text" id="atT" placeholder="Le culte commence bientôt"></div>
+  <div class="row fd"><div><span class="lab">Début à</span><input type="text" id="atH" placeholder="09:00" inputmode="numeric"></div><div><span class="lab">ou dans</span><div class="chips" id="atM"></div></div></div>
+  <div class="fd"><input type="text" id="atS" placeholder="Sous-titre (facultatif) : Restez connectés"></div>
+  <div class="btns"><button class="b go" id="atShow">LANCER LE COMPTE À REBOURS</button><button class="b hide" id="atHide">MASQUER</button></div>
+  <div class="msg" id="atMsg"></div>
 </section>
 <!-- CADRES CAMÉRAS -->
 <section class="tab" id="t-ov">
@@ -128,17 +137,37 @@ footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
   <div class="row fd"><input type="text" id="iK" placeholder="En ce moment"><input type="text" id="iS" placeholder="Chorale de la Grâce"></div>
   <div class="fd"><input type="text" id="iT" placeholder="Louange & adoration"></div></div>
   <div class="help" id="ovHelp"></div>
+  <div class="help" style="margin-top:10px"><b>Un lien fixe par scène OBS</b> (conseillé) : chaque scène garde son cadre, même quand vous changez de scène. Mettez ce lien dans la source Navigateur de la scène :<div id="fixLinks"></div></div>
+</section>
+<!-- INFOS -->
+<section class="tab" id="t-info">
+  <div class="lab">Thème de la prédication</div>
+  <div class="fd"><textarea id="thT" placeholder="Ex. : La foi qui déplace les montagnes"></textarea></div>
+  <div class="fd"><input type="text" id="thL" placeholder="Étiquette : Thème du jour"></div>
+  <div class="btns"><button class="b go" id="thShow">AFFICHER LE THÈME</button><button class="b hide" id="thHide">MASQUER</button></div>
+  <div class="sep"></div>
+  <div class="lab">Bandeau d'infos qui défile (une info par ligne)</div>
+  <div class="fd"><textarea id="tkT" style="min-height:110px" placeholder="Bienvenue à tous !&#10;Offrandes : Orange Money / Wave …&#10;Partagez ce direct autour de vous"></textarea></div>
+  <div class="row fd"><input type="text" id="tkL" placeholder="Étiquette : Infos"><div class="chips" id="tkS"></div></div>
+  <label class="ck"><input type="checkbox" id="tkTh"> Ajouter le thème au début du défilant</label>
+  <div class="btns"><button class="b go" id="tkShow">LANCER LE DÉFILANT</button><button class="b hide" id="tkHide">MASQUER</button></div>
 </section>
 <!-- RÉGLAGES -->
 <section class="tab" id="t-set">
   <div class="fd"><label for="church">Nom de l'église (coin de l'écran)</label><input type="text" id="church" placeholder="Ex. : Église Évangélique de la Grâce"></div>
-  <label class="ck"><input type="checkbox" id="showBug"> Afficher le nom en haut à droite</label>
+  <label class="ck"><input type="checkbox" id="showBug"> Afficher le logo (ou le nom) en haut à droite</label>
   <label class="ck"><input type="checkbox" id="liveDot"> Ajouter le point rouge « en direct »</label>
+  <div class="fd" style="margin-top:8px"><span class="lab">Logo de l'église (PNG de préférence)</span><div class="row" style="align-items:center"><div id="logoPrev" style="flex:0 0 56px;height:56px;border-radius:10px;background:var(--p);border:1px solid var(--l);display:grid;place-items:center;overflow:hidden"></div><label class="b sm" style="flex:1;text-align:center">Choisir le logo<input type="file" id="logoF" accept="image/*" style="display:none"></label><button class="b sm hide" id="logoX">Retirer</button></div></div>
   <div class="sep"></div>
   <div class="fd"><span class="lab">Couleur principale</span><div class="sw" id="sw"></div></div>
   <div class="fd"><span class="lab">Position du bandeau</span><div class="chips" id="poss"></div></div>
   <div class="fd"><span class="lab">Transition</span><div class="chips" id="trans"></div></div>
   <div class="fd"><span class="lab">Vitesse</span><div class="chips" id="speeds"></div></div>
+  <div class="sep"></div>
+  <div class="lab">Licence</div>
+  <div class="help" id="licBox"></div>
+  <div class="fd" style="margin-top:8px"><textarea id="licCode" placeholder="Collez ici le code d'activation (LEG1. …)" style="min-height:60px;font-size:12px"></textarea></div>
+  <div class="msg err" id="licMsg"></div><div class="btns"><button class="b pri" id="licAct">Activer</button><a class="b" id="licWa" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">Demander un code</a></div>
   <div class="sep"></div>
   <div class="help"><b>Installation dans OBS</b><br>1. Source « Navigateur » : <code id="ovUrl"></code> · largeur 1920, hauteur 1080.<br>2. Cette régie : menu Docks › Docks de navigateur personnalisés.<br><a href="./" target="_blank" style="color:#8fb0ff">Voir le guide complet</a></div>
 </section>
@@ -157,12 +186,12 @@ var ui=load(UIK,{saved:[],recent:[],auto:0,bg:'lumiere'});
 var bc=null;try{bc=new BroadcastChannel(KEY)}catch(e){}
 function send(){st.ts=Date.now();store(KEY,st);if(bc)bc.postMessage(st);status()}
 function saveUi(){store(UIK,ui)}
-function status(){$('pLt').classList.toggle('on',!!st.lt.on);if(st.ov)$('pOv').classList.toggle('on',!!st.ov.on);$('pFs').classList.toggle('on',!!st.fs.on);$('pBug').classList.toggle('on',!!(st.settings.showBug&&st.settings.church))}
+function status(){$('pLt').classList.toggle('on',!!st.lt.on);if(st.th)$('pTh').classList.toggle('on',!!(st.th.on&&st.th.text));if(st.tk)$('pTk').classList.toggle('on',!!st.tk.on);if(st.ov)$('pOv').classList.toggle('on',!!st.ov.on);$('pFs').classList.toggle('on',!!st.fs.on);$('pBug').classList.toggle('on',!!(st.settings.showBug&&st.settings.church))}
 function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function chips(id,list,cur,fn){var el=$(id);el.innerHTML='';list.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='chip'+(o[0]==cur?' on':'');b.textContent=o[1];b.onclick=function(){fn(o[0]);chips(id,list,o[0],fn)};el.appendChild(b)})}
 // onglets
 document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){document.querySelectorAll('nav button').forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.id=='t-'+b.dataset.t)})}});
-$('stopAll').onclick=function(){st.lt.on=false;st.fs.on=false;clearTimeout(autoT);send()};
+$('stopAll').onclick=function(){st.lt.on=false;st.fs.on=false;if(st.th)st.th.on=false;if(st.tk)st.tk.on=false;clearTimeout(autoT);send()};
 $('pLt').onclick=function(){if(st.lt.on){st.lt.on=false;send()}};
 $('pFs').onclick=function(){if(st.fs.on){st.fs.on=false;send()}};
 $('pBug').onclick=function(){st.settings.showBug=!st.settings.showBug;$('showBug').checked=st.settings.showBug;send()};
@@ -222,6 +251,48 @@ $('ovShow').onclick=function(){OV.on=true;send()};$('ovHide').onclick=function()
 $('pOv').onclick=function(){if(OV.on){OV.on=false;send()}};
 $('vpTake').onclick=function(){if(!BIB)return;OV.vText=verses().map(function(x){return x[1]}).join(' ');OV.vRef=ref();ovUi();if(OV.on)send();else store(KEY,st)};
 drawLays();ovUi();
+
+/* ---------- ATTENTE ---------- */
+var atMin=0;chips('atM',[[5,'5 min'],[10,'10'],[15,'15'],[30,'30']],0,function(v){atMin=v;$('atH').value=''});
+$('atShow').onclick=function(){var t=0,h=$('atH').value.trim().replace('h',':').replace('H',':');
+ if(h){var m=h.match(/^(\d{1,2})(?::(\d{2}))?$/);if(!m){$('atMsg').textContent='Heure invalide. Exemple : 09:00';return}var d=new Date();d.setHours(+m[1],+(m[2]||0),0,0);if(d<new Date())d.setDate(d.getDate()+1);t=d.getTime()}
+ else if(atMin)t=Date.now()+atMin*60000;else{$('atMsg').textContent='Choisissez une heure de début ou une durée.';return}
+ $('atMsg').textContent='';st.fs={on:true,kind:'attente',title:$('atT').value.trim()||'Le culte commence bientôt',kicker:st.settings.church||'',sub:$('atS').value.trim(),target:t,endText:'Bienvenue !',bg:ui.bg=='aucun'?'lumiere':ui.bg};send()};
+$('atHide').onclick=function(){if(st.fs.kind=='attente'){st.fs.on=false;send()}};
+/* ---------- INFOS ---------- */
+st.th=Object.assign({on:false,text:'',label:''},st.th||{});st.tk=Object.assign({on:false,items:[],label:'',speed:'normal',withTheme:true},st.tk||{});
+$('thT').value=st.th.text;$('thL').value=st.th.label;$('tkT').value=st.tk.items.join('\n');$('tkL').value=st.tk.label;$('tkTh').checked=st.tk.withTheme;
+function live(e,fn){e.oninput=function(){fn();clearTimeout(e._t);e._t=setTimeout(send,300)}}
+live($('thT'),function(){st.th.text=$('thT').value.trim().replace(/\s+/g,' ')});live($('thL'),function(){st.th.label=$('thL').value.trim()});
+live($('tkT'),function(){st.tk.items=$('tkT').value.split('\n').map(function(x){return x.trim()}).filter(Boolean)});live($('tkL'),function(){st.tk.label=$('tkL').value.trim()});
+$('tkTh').onchange=function(){st.tk.withTheme=this.checked;send()};
+chips('tkS',[['lent','Lent'],['normal','Normal'],['rapide','Rapide']],st.tk.speed,function(v){st.tk.speed=v;send()});
+$('thShow').onclick=function(){if(!st.th.text){$('thT').focus();return}st.th.on=true;send()};$('thHide').onclick=function(){st.th.on=false;send()};
+$('tkShow').onclick=function(){if(!st.tk.items.length&&!(st.tk.withTheme&&st.th.text)){$('tkT').focus();return}st.tk.on=true;send()};$('tkHide').onclick=function(){st.tk.on=false;send()};
+$('pTh').onclick=function(){if(st.th.on){st.th.on=false;send()}};$('pTk').onclick=function(){if(st.tk.on){st.tk.on=false;send()}};
+/* ---------- LIENS FIXES ---------- */
+(function(){var h='';LAYS.forEach(function(l){var u=new URL('affichage.html?cadre='+l[0],location.href).href;h+='<div class="fx"><span>'+l[1]+'</span><code>'+u+'</code><button type="button" data-u="'+u+'">Copier</button></div>'});$('fixLinks').innerHTML=h;
+ $('fixLinks').onclick=function(e){var b=e.target.closest('button');if(!b)return;var u=b.dataset.u;function ok(){b.textContent='Copié !';setTimeout(function(){b.textContent='Copier'},1500)}
+  var c=b.previousSibling,rg=document.createRange();rg.selectNodeContents(c);var sl=getSelection();sl.removeAllRanges();sl.addRange(rg);try{if(navigator.clipboard)navigator.clipboard.writeText(u).then(ok,function(){document.execCommand('copy');ok()});else{document.execCommand('copy');ok()}}catch(e){}}})();
+/* ---------- LOGO ---------- */
+function drawLogo(){$('logoPrev').innerHTML=S.logo?'<img src="'+S.logo+'" style="max-width:100%;max-height:100%">':'<span style="font-size:10px;color:var(--m)">aucun</span>'}
+$('logoF').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var m=360,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);S.logo=c.toDataURL('image/png');drawLogo();send()};im.src=r.result};r.readAsDataURL(f);this.value=''};
+$('logoX').onclick=function(){S.logo='';drawLogo();send()};drawLogo();
+/* ---------- LICENCE ---------- */
+var PUB='0247da888fb077924282b25c88f6428728ae2fb19702ccb63586f40b940acddcd2';
+function mkDev(){var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r=new Uint8Array(8);crypto.getRandomValues(r);var x='';for(var i=0;i<8;i++)x+=A[r[i]%A.length];return 'LE-'+x.slice(0,4)+'-'+x.slice(4)}
+try{var dv=localStorage.getItem('live-eglise-dev');if(!dv||!/^LE-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(dv)){dv=mkDev();localStorage.setItem('live-eglise-dev',dv)}st.dev=dv}catch(e){st.dev=st.dev||mkDev()}
+function hexb(h){var a=new Uint8Array(h.length/2);for(var i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a}
+function ub64(t){t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';var b=atob(t),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+function chk(c){try{c=(c||'').replace(/\s+/g,'');var p=c.split('.');if(p.length!==4||p[0]!=='LEG1'||!window.MCV)return null;var nm=new TextDecoder().decode(ub64(p[1])),ex=new TextDecoder().decode(ub64(p[2]));
+ if(!window.MCV.verify(ub64(p[3]),new TextEncoder().encode('LEG1|'+st.dev+'|'+nm+'|'+ex),hexb(PUB)))return null;return {name:nm,exp:ex,ok:ex>=new Date().toISOString().slice(0,10)}}catch(e){return null}}
+function fd(d){var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
+function drawLic(){var L=chk(st.lic);
+ $('licBox').innerHTML='Code de cet ordinateur : <b style="font-size:14px;letter-spacing:.06em">'+st.dev+'</b><br>'+(L?(L.ok?'<span style="color:#4fd18b">✓ Licence active</span> · '+esc(L.name)+' · jusqu\'au '+fd(L.exp):'<span style="color:#ff8a86">Licence expirée le '+fd(L.exp)+'</span> · renouvelez-la'):'<span style="color:#ffc46b">Version démo</span> : le filigrane « DÉMO » s\'affiche sur le live.');
+ $('licWa').href='https://wa.me/22664379597?text='+encodeURIComponent('Bonjour MOSES GRAPHITY, je souhaite activer Live Église.\nÉglise : '+(S.church||'…')+'\nCode ordinateur : '+st.dev);
+ $('licWa').textContent=L&&L.ok?'Renouveler':'Demander un code'}
+$('licAct').onclick=function(){var c=$('licCode').value.trim(),L=chk(c);if(!L){$('licMsg').textContent='Code invalide pour cet ordinateur. Vérifiez le code reçu.';return}$('licMsg').textContent='';st.lic=c.replace(/\s+/g,'');$('licCode').value='';drawLic();send()};
+drawLic();
 $('ovUrl').textContent=new URL('affichage.html',location.href).href;
 
 /* ---------- BIBLE ---------- */
@@ -244,14 +315,16 @@ function preview(){var vs=verses();$('bprev').innerHTML=vs.map(function(x){retur
 function addRecent(){var r={b:sel.b,c:sel.c,a:sel.a,z:sel.z,t:ref()};ui.recent=[r].concat(ui.recent.filter(function(x){return x.t!=r.t})).slice(0,10);saveUi();drawRecent()}
 function drawRecent(){var el=$('recent');el.innerHTML='';ui.recent.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=r.t;b.onclick=function(){sel={b:r.b,c:r.c,a:r.a,z:r.z};drawSel()};el.appendChild(b)});if(!ui.recent.length)el.innerHTML='<span class="msg">Les passages affichés apparaîtront ici.</span>'}
 var mode=null;
-function liveLt(){var vs=verses();st.lt={on:true,kind:'verset',l1:vs.map(function(x){return x[1]}).join(' '),l2:ref()};mode='lt';clearTimeout(autoT);send();addRecent()}
-function liveFs(){var vs=verses();st.fs={on:true,kind:'verset',title:'',html:vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' '),sub:ref(),kicker:'',bg:ui.bg=='aucun'?'lumiere':ui.bg};mode='fs';send();addRecent()}
-$('bLt').onclick=liveLt;$('bFs').onclick=liveFs;
+function toPanel(){if(!st.ov)return;st.ov.vText=verses().map(function(x){return x[1]}).join(' ');st.ov.vRef=ref();if(typeof ovUi=='function')ovUi()}
+function liveOv(){toPanel();mode='ov';send();addRecent()}
+function liveLt(){toPanel();var vs=verses();st.lt={on:true,kind:'verset',l1:vs.map(function(x){return x[1]}).join(' '),l2:ref()};mode='lt';clearTimeout(autoT);send();addRecent()}
+function liveFs(){toPanel();var vs=verses();st.fs={on:true,kind:'verset',title:'',html:vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' '),sub:ref(),kicker:'',bg:ui.bg=='aucun'?'lumiere':ui.bg};mode='fs';send();addRecent()}
+$('bLt').onclick=liveLt;$('bFs').onclick=liveFs;$('bOv').onclick=liveOv;
 $('bHide').onclick=function(){if(st.lt.kind=='verset')st.lt.on=false;if(st.fs.kind=='verset')st.fs.on=false;mode=null;send()};
 function step(d){var n=sel.z-sel.a+1,bk=BIB[sel.b][1],nv=bk[sel.c-1].length;
  if(d>0){if(sel.z<nv){sel.a=sel.z+1;sel.z=Math.min(nv,sel.a+n-1)}else if(sel.c<bk.length){sel.c++;sel.a=1;sel.z=Math.min(bk[sel.c-1].length,n)}else return}
  else{if(sel.a>1){sel.z=sel.a-1;sel.a=Math.max(1,sel.z-n+1)}else if(sel.c>1){sel.c--;var m=bk[sel.c-1].length;sel.z=m;sel.a=Math.max(1,m-n+1)}else return}
- drawSel();if(mode=='lt'&&st.lt.on&&st.lt.kind=='verset')liveLt();else if(mode=='fs'&&st.fs.on&&st.fs.kind=='verset')liveFs()}
+ drawSel();if(mode=='lt'&&st.lt.on&&st.lt.kind=='verset')liveLt();else if(mode=='fs'&&st.fs.on&&st.fs.kind=='verset')liveFs();else if(mode=='ov')liveOv()}
 $('bNext').onclick=function(){step(1)};$('bPrev').onclick=function(){step(-1)};
 $('bk').onchange=function(){sel={b:+this.value,c:1,a:1,z:1};drawSel()};
 $('ch').onchange=function(){sel.c=+this.value;sel.a=1;sel.z=1;drawSel()};
