@@ -68,54 +68,17 @@ textarea{resize:vertical;min-height:56px}
 .lays button.on{border-color:var(--acc);color:#fff;background:#1c2748}
 .lays svg{display:block;width:100%;height:auto;margin-bottom:4px}
 .fx{display:flex;gap:6px;align-items:center;margin-top:6px}.fx span{flex:0 0 92px;font-weight:700;color:var(--t);font-size:12px}.fx code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.fx button{flex:none;background:var(--acc);border:0;color:#fff;border-radius:6px;padding:5px 8px;font:700 11px Mont;cursor:pointer}
-.mode{background:var(--p2);border:1px solid var(--l);border-radius:8px;padding:8px 10px;font-weight:700;font-size:12px;cursor:pointer;color:var(--t);white-space:nowrap}
-body.simple nav{display:none}
-body.simple .live{margin-bottom:10px}
-.sc{background:var(--p);border:1px solid var(--l);border-radius:12px;padding:12px;margin-bottom:12px}
-.sh{font-weight:800;font-size:14px;margin-bottom:8px}.sh span{font-weight:600;color:var(--m);font-size:12px}
-.sc input[type=text]{background:var(--bg);font-size:15px;padding:11px 12px}
-.sp{margin-top:8px;max-height:120px;background:var(--bg);font-size:14px}
-.b.big{padding:14px 8px;font-size:14px}
-.sc .chips .chip{padding:9px 13px;font-size:13.5px}
-.sc .chip.live{background:var(--on);border-color:var(--on);color:#fff}
 footer{padding:10px 12px 16px;font-size:11px;color:#6b7186;text-align:center}
 </style>
 <script src="noble.min.js"></script>
 </head>
 <body>
 <header>
-  <div class="hd"><h1>Live Église<small>RÉGIE · MOSES GRAPHITY</small></h1><div style="display:flex;gap:6px"><button class="mode" id="modeBtn">Mode complet</button><button class="stop" id="stopAll">TOUT MASQUER</button></div></div>
+  <div class="hd"><h1>Live Église<small>RÉGIE · MOSES GRAPHITY</small></h1><button class="stop" id="stopAll">TOUT MASQUER</button></div>
   <div class="live"><span class="pill" id="pLt" title="Masquer le bandeau"><i></i>Bandeau</span><span class="pill" id="pFs" title="Masquer le plein écran"><i></i>Plein écran</span><span class="pill" id="pOv" title="Masquer les cadres"><i></i>Cadres</span><span class="pill" id="pTh" title="Masquer le thème"><i></i>Thème</span><span class="pill" id="pTk" title="Masquer le défilant"><i></i>Défilant</span><span class="pill" id="pBug" title="Afficher / masquer le logo ou le nom de l'église"><i></i>Logo</span></div>
   <nav><button data-t="bible" class="on">Bible</button><button data-t="lt">Bandeau</button><button data-t="fs">Écran</button><button data-t="ov">Cadres</button><button data-t="info">Infos</button><button data-t="set">Réglages</button></nav>
 </header>
 <main>
-<!-- MODE SIMPLE -->
-<section class="tab" id="t-live">
-  <div class="sc"><div class="sh">Bible</div>
-    <input type="text" id="sq" placeholder="Tapez : Jean 3:16 puis Entrée" autocomplete="off">
-    <div class="prev sp" id="sprev"></div>
-    <div class="btns"><button class="b go big" id="sLt">Bandeau</button><button class="b go big" id="sFs">Plein écran</button><button class="b go big" id="sOv">Cadre</button></div>
-    <div class="btns"><button class="b big" id="sPrev">◀</button><button class="b big" id="sNext" style="flex:3">Verset suivant ▶</button><button class="b hide big" id="sVh">Masquer</button></div>
-  </div>
-  <div class="sc"><div class="sh">Orateurs <span>· un clic = affiché</span></div>
-    <div class="chips" id="sSaved"></div>
-    <div class="btns"><button class="b hide big" id="sLh" style="flex:1">Masquer le nom</button></div>
-  </div>
-  <div class="sc"><div class="sh">Thème</div>
-    <input type="text" id="sTh" placeholder="Thème de la prédication">
-    <div class="btns"><button class="b go big" id="sThOn">Afficher</button><button class="b hide big" id="sThOff">Masquer</button></div>
-  </div>
-  <div class="sc"><div class="sh">Écrans</div>
-    <div class="chips" id="sPre"></div>
-    <div class="sh" style="margin-top:10px;font-size:12px">Compte à rebours</div>
-    <div class="chips" id="sAt"></div>
-    <div class="btns"><button class="b hide big" id="sFh" style="flex:1">Masquer l'écran</button></div>
-  </div>
-  <div class="sc"><div class="sh">Infos qui défilent</div>
-    <div class="btns" style="margin:0"><button class="b go big" id="sTk" style="flex:1">Lancer le défilant</button></div>
-  </div>
-  <p class="msg" style="text-align:center">Orateurs, infos et réglages se préparent en <b>Mode complet</b>.</p>
-</section>
 <!-- BIBLE -->
 <section class="tab on" id="t-bible">
   <div class="fd"><label for="q">Rechercher un passage</label><input type="text" id="q" placeholder="Ex. : Jean 3:16  ·  Ps 23:1-4  ·  1 Co 13" autocomplete="off"></div>
@@ -330,32 +293,6 @@ function drawLic(){var L=chk(st.lic);
  $('licWa').textContent=L&&L.ok?'Renouveler':'Demander un code'}
 $('licAct').onclick=function(){var c=$('licCode').value.trim(),L=chk(c);if(!L){$('licMsg').textContent='Code invalide pour cet ordinateur. Vérifiez le code reçu.';return}$('licMsg').textContent='';st.lic=c.replace(/\s+/g,'');$('licCode').value='';drawLic();send()};
 drawLic();
-
-/* ---------- MODE SIMPLE ---------- */
-function setMode(m){ui.mode=m;saveUi();var simple=m!=='complet';document.body.classList.toggle('simple',simple);$('modeBtn').textContent=simple?'Mode complet':'Mode simple';
- if(simple){document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.id=='t-live')});drawSimple()}
- else{document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});var b=document.querySelector('nav button.on')||document.querySelector('nav button');b.click()}}
-$('modeBtn').onclick=function(){setMode(document.body.classList.contains('simple')?'complet':'simple')};
-$('sq').onkeydown=function(e){if(e.key=='Enter'){$('q').value=this.value;$('q').onkeydown.call($('q'),{key:'Enter'});if($('bmsg').className.indexOf('err')>-1)$('sprev').innerHTML='<span style="color:#ff8a86;font:600 13px Mont">'+$('bmsg').textContent+'</span>'}};
-$('sLt').onclick=function(){$('bLt').click()};$('sFs').onclick=function(){$('bFs').click()};$('sOv').onclick=function(){$('bOv').click()};
-$('sPrev').onclick=function(){$('bPrev').click()};$('sNext').onclick=function(){$('bNext').click()};$('sVh').onclick=function(){$('bHide').click()};
-$('sLh').onclick=function(){$('ltHide').click()};
-$('sTh').value=st.th.text;$('sTh').oninput=function(){st.th.text=this.value.trim();$('thT').value=st.th.text;clearTimeout(this._t);this._t=setTimeout(send,300)};
-$('thT').addEventListener('input',function(){$('sTh').value=this.value});
-$('sThOn').onclick=function(){$('thShow').click()};$('sThOff').onclick=function(){$('thHide').click()};
-$('sFh').onclick=function(){st.fs.on=false;send()};
-$('sTk').onclick=function(){if(st.tk.on){st.tk.on=false;send()}else $('tkShow').click()};
-function drawSimple(){
- var el=$('sSaved');el.innerHTML='';
- if(!ui.saved.length)el.innerHTML='<span class="msg">Aucun orateur : ajoutez-les en Mode complet › Bandeau › Enregistrer.</span>';
- ui.saved.forEach(function(o){var c=document.createElement('button');c.type='button';c.className='chip'+(st.lt.on&&st.lt.kind!='verset'&&st.lt.l1==o.l1?' live':'');c.textContent=o.l1;c.title=o.l2||'';c.onclick=function(){$('l1').value=o.l1;$('l2').value=o.l2||'';showLt(o)};el.appendChild(c)});
- var p=$('sPre');p.innerHTML='';PRE.forEach(function(x){var c=document.createElement('button');c.type='button';c.className='chip'+(st.fs.on&&st.fs.kind=='titre'&&st.fs.title==x[0]?' live':'');c.textContent=x[0];c.onclick=function(){st.fs={on:true,kind:'titre',title:x[0],kicker:x[1],sub:x[2],bg:ui.bg=='aucun'?'lumiere':ui.bg};send()};p.appendChild(c)});
- var a=$('sAt');a.innerHTML='';[5,10,15,30].forEach(function(m){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=m+' min';c.onclick=function(){st.fs={on:true,kind:'attente',title:$('atT').value.trim()||'Le culte commence bientôt',kicker:st.settings.church||'',sub:$('atS').value.trim(),target:Date.now()+m*60000,endText:'Bienvenue !',bg:ui.bg=='aucun'?'lumiere':ui.bg};send()};a.appendChild(c)});
- if(st.fs.on&&st.fs.kind=='attente')a.insertAdjacentHTML('beforeend','<span class="chip live">en cours</span>');
- $('sTk').textContent=st.tk.on?'Arrêter le défilant':'Lancer le défilant';$('sTk').className='b big '+(st.tk.on?'hide':'go');
- $('sThOn').className='b go big'+(st.th.on?' ':'');
-}
-var _status=status;status=function(){_status();if(document.body.classList.contains('simple'))drawSimple()};
 $('ovUrl').textContent=new URL('affichage.html',location.href).href;
 
 /* ---------- BIBLE ---------- */
@@ -374,7 +311,7 @@ function clampSel(){var bk=BIB[sel.b][1];sel.c=Math.max(1,Math.min(sel.c,bk.leng
 function drawSel(){clampSel();$('bk').value=sel.b;var bk=BIB[sel.b][1];opts($('ch'),bk.length,sel.c,function(i){return 'Chapitre '+i});var nv=bk[sel.c-1].length;opts($('v1'),nv,sel.a,function(i){return 'Verset '+i});opts($('v2'),nv,sel.z,function(i){return 'à '+i});preview()}
 function ref(){return BIB[sel.b][0]+' '+sel.c+':'+sel.a+(sel.z>sel.a?'-'+sel.z:'')}
 function verses(){var r=[];for(var v=sel.a;v<=sel.z;v++)r.push([v,BIB[sel.b][1][sel.c-1][v-1]]);return r}
-function preview(){var vs=verses();if($('sprev'))setTimeout(function(){$('sprev').innerHTML=$('bprev').innerHTML},0);$('bprev').innerHTML=vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' ')+'<div class="ref">'+esc(ref())+' · LSG</div>';$('bmsg').textContent=vs.length>3?'Passage long : le plein écran est conseillé.':'';$('bmsg').className='msg'}
+function preview(){var vs=verses();$('bprev').innerHTML=vs.map(function(x){return (vs.length>1?'<sup>'+x[0]+'</sup>':'')+esc(x[1])}).join(' ')+'<div class="ref">'+esc(ref())+' · LSG</div>';$('bmsg').textContent=vs.length>3?'Passage long : le plein écran est conseillé.':'';$('bmsg').className='msg'}
 function addRecent(){var r={b:sel.b,c:sel.c,a:sel.a,z:sel.z,t:ref()};ui.recent=[r].concat(ui.recent.filter(function(x){return x.t!=r.t})).slice(0,10);saveUi();drawRecent()}
 function drawRecent(){var el=$('recent');el.innerHTML='';ui.recent.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=r.t;b.onclick=function(){sel={b:r.b,c:r.c,a:r.a,z:r.z};drawSel()};el.appendChild(b)});if(!ui.recent.length)el.innerHTML='<span class="msg">Les passages affichés apparaîtront ici.</span>'}
 var mode=null;
@@ -396,7 +333,7 @@ $('v2').onchange=function(){sel.z=+this.value;if(sel.z<sel.a)sel.a=sel.z;drawSel
 $('q').onkeydown=function(e){if(e.key=='Enter'){var r=parse(this.value);if(!r){$('bmsg').textContent='Passage introuvable. Exemple : Jean 3:16';$('bmsg').className='msg err';return}sel=r;drawSel();var nb=BIB[sel.b][1];if(r.c>nb.length){$('bmsg').textContent='Ce livre a '+nb.length+' chapitres.';$('bmsg').className='msg err'}}};
 fetch('bible-lsg1910.json').then(function(r){return r.json()}).then(function(d){BIB=d;NAMES=d.map(function(b){return norm(b[0])});$('bk').innerHTML=d.map(function(b,i){return '<option value="'+i+'">'+esc(b[0])+'</option>'}).join('');if(ui.recent[0]){var r=ui.recent[0];sel={b:r.b,c:r.c,a:r.a,z:r.z}}drawSel();drawRecent()}).catch(function(){$('bmsg').textContent='Impossible de charger la Bible. Vérifiez la connexion internet.';$('bmsg').className='msg err'});
 document.addEventListener('keydown',function(e){if(e.target.tagName=='INPUT'||e.target.tagName=='TEXTAREA'||e.target.tagName=='SELECT')return;if(e.key=='ArrowRight')step(1);if(e.key=='ArrowLeft')step(-1);if(e.key=='Escape')$('stopAll').click()});
-setMode(ui.mode||'simple');status();send();
+status();send();
 })();
 </script>
 </body>
