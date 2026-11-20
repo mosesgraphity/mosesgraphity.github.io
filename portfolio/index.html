@@ -7,7 +7,7 @@
 <meta name="description" content="Portfolio de Moïse SANOU, MOSES GRAPHITY : identités visuelles, affiches, vidéos animées, signalétique et solutions digitales à Ouagadougou.">
 <meta property="og:title" content="Portfolio · MOSES GRAPHITY">
 <meta property="og:description" content="Identités visuelles, affiches, vidéos, signalétique et solutions digitales. L'art du design et de l'innovation.">
-<meta property="og:image" content="https://mosesgraphity.github.io/portfolio/img/hysopia.webp">
+<meta property="og:image" content="https://mosesgraphity.github.io/portfolio/img/hysopia-facade.webp">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://mosesgraphity.github.io/portfolio/">
 <link rel="icon" href="../assets/icone.png">
@@ -57,14 +57,14 @@ section{padding:84px 0}
 .sh h2{font-size:clamp(28px,4vw,42px);line-height:1.1;font-weight:800;margin-top:8px;letter-spacing:-.01em}
 .sh p{max-width:430px;color:var(--m)}
 /* sur le terrain */
-.terrain{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}
+.terrain{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:460px 320px;gap:16px}.terrain .full{grid-column:1/-1}.terrain .full img{object-position:50% 62%}
 .terrain figure{position:relative;border-radius:18px;overflow:hidden;background:#dde3ef;cursor:zoom-in}
 .terrain figure img,.terrain figure video{width:100%;height:100%;object-fit:cover;transition:transform .6s}
 .terrain figure:hover img{transform:scale(1.04)}
-.terrain .big{grid-row:span 2}
+
 .terrain figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;color:#fff;background:linear-gradient(transparent,rgba(11,31,77,.85));font-size:14px}
 .terrain figcaption b{display:block;font-size:16px}
-@media(max-width:820px){.terrain{grid-template-columns:1fr 1fr}.terrain .big{grid-column:span 2;grid-row:auto}}
+@media(max-width:820px){.terrain{grid-template-columns:1fr 1fr;grid-template-rows:auto}.terrain .full{aspect-ratio:16/10}.terrain .vit{grid-column:1/-1;aspect-ratio:16/9}.terrain figure:not(.full):not(.vit){aspect-ratio:3/4}.terrain figure:not(.full):not(.vit) figcaption{font-size:12px;padding:30px 10px 10px}.terrain figure:not(.full):not(.vit) figcaption b{font-size:13.5px}}
 /* réalisations */
 .f{display:flex;gap:8px;flex-wrap:wrap}
 .f button{border:1.5px solid var(--l);background:#fff;color:var(--e);font:700 13.5px M,Arial;padding:9px 16px;border-radius:999px;cursor:pointer;transition:.2s}
@@ -160,9 +160,10 @@ footer{background:#081738;color:#8f9bbb;text-align:center;font-size:13px;padding
 </div></div>
 
 <section id="terrain"><div class="w">
-  <div class="sh r"><div><div class="k">Réalisations récentes</div><h2>Du fichier à la pose</h2></div><p>Mes visuels ne restent pas à l'écran : affiches grand format en vitrine et plaques de siège social, conçues puis installées.</p></div>
+  <div class="sh r"><div><div class="k">Réalisations récentes</div><h2>Du fichier à la pose</h2></div><p>Mes visuels ne restent pas à l'écran : affiches grand format sur façade et en vitrine, plaques de siège social, conçues puis installées.</p></div>
   <div class="terrain r">
-    <figure class="big" data-lb><img src="img/hysopia.webp" alt="Affiche du Restaurant Hysopia posée en vitrine" loading="lazy"><figcaption><b>Restaurant Hysopia</b>Affiche grand format posée en vitrine</figcaption></figure>
+    <figure class="full" data-lb><img src="img/hysopia-facade.webp" alt="Façade du Restaurant Hysopia avec les affiches menu grand format" loading="lazy"><figcaption><b>Restaurant Hysopia · Snack Café</b>Affiches menu grand format sur la façade</figcaption></figure>
+    <figure class="vit" data-lb><img src="img/hysopia.webp" alt="Affiche du Restaurant Hysopia posée en vitrine" loading="lazy"><figcaption><b>Restaurant Hysopia</b>Affiche grand format en vitrine</figcaption></figure>
     <figure data-lb><img src="img/plaques1.webp" alt="Plaques Siège social FlyAriella et L'Afrique en Avion" loading="lazy"><figcaption><b>FlyAriella · L'Afrique en Avion</b>Plaques « Siège social »</figcaption></figure>
     <figure data-lb><img src="img/plaques2.webp" alt="Plaques Siège social installées" loading="lazy"><figcaption><b>Signalétique</b>Conception et pose</figcaption></figure>
   </div>
@@ -247,7 +248,7 @@ var W=[
 ['logo_eligie','id','Eligie Pro','Logo'],['w09','aff','Jus naturels','Affiche produit'],['w10','aff','Perfy Travel','Affiche agence'],['ban_siako','ban','Siako Sport · Yeleen Confection','Bannière'],
 ['w12','aff','Tombola Canaan Services','Affiche événement'],['logo_ash','id','ASH Créations','Logo'],['w02','ban','Aily Fruits','Visuel réseaux sociaux'],['ban_abou','ban','Chez Abou','Bannière restaurant'],
 ['logo_barakah','id','Barakah Restauration','Logo'],['w07','aff','Anniversaire','Visuel réseaux sociaux'],['logo_s','id','Monogramme S','Logo'],['logo_e','id','Monogramme E','Logo'],
-['plaques1','sig','FlyAriella · L\'Afrique en Avion','Plaques Siège social'],['hysopia','sig','Restaurant Hysopia','Affiche grand format en vitrine']];
+['hysopia-facade','sig','Restaurant Hysopia · Snack Café','Affiches menu sur la façade'],['plaques1','sig','FlyAriella · L\'Afrique en Avion','Plaques Siège social'],['hysopia','sig','Restaurant Hysopia','Affiche grand format en vitrine']];
 var g=document.getElementById('gal');
 g.innerHTML=W.map(function(w,i){return '<figure class="r'+(w[1]==='id'?' logo':'')+'" data-c="'+w[1]+'" data-i="'+i+'"><img src="img/'+w[0]+'.webp" alt="'+w[2]+' · '+w[3]+'" loading="lazy"><figcaption><b>'+w[2]+'</b><span>'+w[3]+'</span></figcaption></figure>'}).join('');
 /* filtres */
